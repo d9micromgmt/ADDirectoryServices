@@ -27,7 +27,7 @@ configuration ADDSPrimaryDC
         }
           xWaitForADDomain DscForestWait
         {
-            DomainName = $Node.DomainName
+            DomainName = $DomainName
             DomainUserCredential = $domainCred
             RetryCount = $RetryCount
             RetryIntervalSec = $RetryIntervalSec
