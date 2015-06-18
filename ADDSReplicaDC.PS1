@@ -9,7 +9,11 @@ configuration ADDSPrimaryDC
         [Parameter(Mandatory)]
         [pscredential]$DNSDelegationCred,
         [Parameter(Mandatory)]
-        [String] $DomainName
+        [String] $DomainName,
+        [Parameter(Mandatory)]
+        [String] $RetryCount,
+        [Parameter(Mandatory)]
+        [String] $RetryIntervalSec
     )
 
     Import-DSCResource -modulename xActiveDirectory
@@ -21,13 +25,21 @@ configuration ADDSPrimaryDC
             Ensure = "Present"
             Name = "AD-Domain-Services"
         }
-        xADDomain PrimaryDC
+          xWaitForADDomain DscForestWait
+        {
+            DomainName = $Node.DomainName
+            DomainUserCredential = $domainCred
+            RetryCount = $RetryCount
+            RetryIntervalSec = $RetryIntervalSec
+            DependsOn = "[WindowsFeature]ADDSInstall"
+        }
+        xADDomainController ReplicaDC
         {
             DomainName = $DomainName
             DomainAdministratorCredential = $domainCred
             SafemodeAdministratorPassword = $safemodeAdministratorCred
             DnsDelegationCredential = $DNSDelegationCred
-            DependsOn = "[WindowsFeature]ADDSInstall"
+            DependsOn = "[xWaitForADDomain]DscForestWait"
         }
     }
 }
