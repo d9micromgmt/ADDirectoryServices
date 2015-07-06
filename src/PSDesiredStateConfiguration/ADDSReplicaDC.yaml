@@ -1,0 +1,33 @@
+configuration: ADDSReplicaDC
+
+Param:
+ - safemodeAdministratorCred:
+    Parameter:
+     mandatory: $true
+    Type: pscredential
+ - domainCred:
+    Parameter:
+     mandatory: $true
+    Type: pscredential
+ - DNSDelegationCred:
+    Parameter:
+     mandatory: $true
+    Type: pscredential
+ - DomainName:
+    Parameter:
+     mandatory: $true
+    Type: string
+
+
+import:
+ - xActiveDirectory
+node:
+ localhost
+  - windowsfeature:
+   - ADDSInstall
+  - ADDomain:
+   - ReplicaDC:
+      DomainName: $DomainName
+      DomainAdministrator: $safemodeAdministratorCred
+      DnsDelegationCredential: $DNSDelegationCred
+      DependsOn: "[WindowsFeature]ADDSInstall"
