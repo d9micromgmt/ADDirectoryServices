@@ -1,7 +1,7 @@
 (set-env!
   :source-paths #{"src"}
   :dependencies '[[org.clojure/clojure       "1.7.0" :scope "provided"]
-                  [degree9/boot-d9micromgmt  "0.1.1"]
+                  [degree9/boot-d9micromgmt  "0.1.2"]
                   [boot/core                 "2.1.2"]])
 
 (require '[degree9.boot-d9micromgmt :refer :all])
