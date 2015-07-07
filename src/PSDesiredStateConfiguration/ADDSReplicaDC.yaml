@@ -22,12 +22,23 @@ Param:
 import:
  - xActiveDirectory
 node:
- localhost
-  - windowsfeature:
-   - ADDSInstall
-  - ADDomain:
-   - ReplicaDC:
-      DomainName: $DomainName
-      DomainAdministrator: $safemodeAdministratorCred
-      DnsDelegationCredential: $DNSDelegationCred
-      DependsOn: "[WindowsFeature]ADDSInstall"
+ - localhost:
+   - windowsfeature:
+     - ADDSInstall:
+       ensure: "Present"
+       Name: "AD-Domain-Services"
+
+   - WaitForADDomain:
+     - DscForestWait:
+        DomainName: $DomainName
+        DomainUserCredential: $domainCred
+        RetryCount: $RetryCount
+        RetryIntervalSec: $RetryIntervalSec
+        DependsOn: "[WindowsFeature]ADDSInstall"
+
+   - ADDomain:
+     - ReplicaDC:
+        DomainName: $DomainName
+        DomainAdministrator: $safemodeAdministratorCred
+        DnsDelegationCredential: $DNSDelegationCred
+        DependsOn: "[WindowsFeature]ADDSInstall"

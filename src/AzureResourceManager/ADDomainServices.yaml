@@ -1,0 +1,19 @@
+Configuration: ADDomainServices
+parameters:
+ - location:
+    type: string
+    allowedValues: EastUS WestUS WestEurope EastAsia SouthEastAsia
+    metadata:
+     description: Deployment location
+
+ - storageAccount:
+    type: string
+
+ - resourceGroup:
+    type: string
+
+ - vmSize:
+    type: string
+    defaultValue: Standard_D1
+    metadata:
+     description: VM size

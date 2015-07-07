@@ -18,16 +18,19 @@ param:
      mandatory: $true
     Type: string
 
-
 import:
  - xActiveDirectory
+
 node:
- localhost
-  - windowsfeature:
-   - ADDSInstall
-  - ADDomain:
-   - PrimaryDC:
-      DomainName: $DomainName
-      DomainAdministrator: $safemodeAdministratorCred
-      DnsDelegationCredential: $DNSDelegationCred
-      DependsOn: "[WindowsFeature]ADDSInstall"
+ - localhost:
+   - windowsfeature:
+     - ADDSInstall:
+        ensure: "Present"
+        Name: "AD-Domain-Services"
+
+   - ADDomain:
+     - PrimaryDC:
+        DomainName: $DomainName
+        DomainAdministrator: $safemodeAdministratorCred
+        DnsDelegationCredential: $DNSDelegationCred
+        DependsOn: "[WindowsFeature]ADDSInstall"
