@@ -19,7 +19,7 @@ param:
     Type: string
 
 import:
- - xActiveDirectory
+ - Module: "xActiveDirectory"
 
 node:
  - localhost:
